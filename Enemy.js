@@ -13,6 +13,3 @@ class Enemy {
         console.log(this.y);
     }
 }
-
-let enemy_1 = new Enemy();
-enemy_1.move();
