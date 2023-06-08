@@ -1,6 +1,9 @@
-function searchPath(map) {
+import { grid } from "./constant.js";
+
+function searchPath() {
+  const map = grid;
   // マップのサイズを取得
-  const mapWidth = map[0].length-1;
+  const mapWidth = map[0].length - 1;
   const mapHeight = map.length;
 
   // スタート位置の特定
@@ -81,5 +84,4 @@ function searchPath(map) {
   return null;
 }
 
-path = searchPath(map);
-console.log(path);
+export default searchPath;
