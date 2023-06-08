@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>My Map</title>
+    <script type="module" src="main.js"></script>
+    <style>
+      :root {
+        --cell-size: 2rem;
+      }
+
+      .grid {
+        display: grid;
+        justify-content: center;
+        grid-template-columns: repeat(20, var(--cell-size));
+        grid-template-rows: repeat(10, var(--cell-size));
+        gap: 0px;
+      }
+
+      .cell {
+        width: var(--cell-size);
+        height: var(--cell-size);
+      }
+
+      .border {
+        background: black;
+      }
+
+      .black {
+        background: black;
+      }
+
+      .white {
+        background: white;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="grid" class="grid auto-fit"></div>
+  </body>
+</html>
