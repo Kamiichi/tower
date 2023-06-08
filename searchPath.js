@@ -1,13 +1,7 @@
 function searchPath(map) {
-<<<<<<< HEAD:searchPath.js
-    // マップのサイズを取得
-    const mapWidth = map[0].length-1;
-    const mapHeight = map.length;
-=======
   // マップのサイズを取得
-  const mapWidth = map[0].length;
+  const mapWidth = map[0].length-1;
   const mapHeight = map.length;
->>>>>>> refs/remotes/origin/main:serchPath.js
 
   // スタート位置の特定
   let start_y = 0;
