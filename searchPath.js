@@ -1,7 +1,13 @@
 function searchPath(map) {
+<<<<<<< HEAD:searchPath.js
+    // マップのサイズを取得
+    const mapWidth = map[0].length-1;
+    const mapHeight = map.length;
+=======
   // マップのサイズを取得
-  const mapWidth = map[0].length-1;
+  const mapWidth = map[0].length;
   const mapHeight = map.length;
+>>>>>>> refs/remotes/origin/main:serchPath.js
 
   // スタート位置の特定
   let start_y = 0;
@@ -62,49 +68,18 @@ function searchPath(map) {
       const newX = currentNode.x + direction.dx;
       const newY = currentNode.y + direction.dy;
 
-  // 移動可能な4方向を定義
-  const directions = [
-      { dx: 0, dy: -1 },  // 上
-      { dx: 0, dy: 1 },   // 下
-      { dx: -1, dy: 0 },  // 左
-      { dx: 1, dy: 0 }    // 右
-  ];
-
-  // ゴールに到達するまで繰り返す
-  while (openList.length > 0) {
-      // オープンリストから最もコストの低いノードを取得
-      const currentNode = openList.shift();
-
-      // ゴールに到達した場合、パスを構築して返す
-      if (currentNode.x === goalX && currentNode.y === goalY) {
-          const path = [];
-          let node = currentNode;
-          while (node !== null) {
-              path.unshift([node.x, node.y]);
-              node = node.parent;
-          }
-          return path;
-      }
-
-      // クローズドリストに追加
-      closedList.push(currentNode);
-      
-      // 各方向に移動を試みる
-      for (const direction of directions) {
-        const newX = currentNode.x + direction.dx;
-        const newY = currentNode.y + direction.dy;
-
-        // 移動先がマップ範囲内であり、通行可能かつクローズドリストに含まれていない場合
-        if (
-            newX >= 0 && newX < mapWidth &&
-            newY >= 0 && newY < mapHeight &&
-            map[newY][newX] === 0 &&
-            !closedList.some(node => node.x === newX && node.y === newY)
-        ) {
-            // 移動先のノードを生成し、オープンリストに追加
-            const newNode = { x: newX, y: newY, parent: currentNode };
-            openList.push(newNode);
-        }
+      // 移動先がマップ範囲内であり、通行可能かつクローズドリストに含まれていない場合
+      if (
+        newX >= 0 &&
+        newX < mapWidth &&
+        newY >= 0 &&
+        newY < mapHeight &&
+        map[newY][newX] === 0 &&
+        !closedList.some((node) => node.x === newX && node.y === newY)
+      ) {
+        // 移動先のノードを生成し、オープンリストに追加
+        const newNode = { x: newX, y: newY, parent: currentNode };
+        openList.push(newNode);
       }
     }
   }
