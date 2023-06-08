@@ -4,7 +4,9 @@ import { grid } from "./constant.js";
 // ●の色を定義します。
 const circleColor = "red";
 
-const firstEnemy = new Enemy();
+const enemylist = [];
+
+let turnCount = 0;
 
 function initMap() {
   const cellSize = (window.innerWidth * 0.7) / 20;
@@ -32,27 +34,29 @@ function initMap() {
       gridContainer.appendChild(cell);
     }
   }
-
-  let currentCell = document.getElementById(
-    `cell-${firstEnemy.y}-${firstEnemy.x - 1}`
-  );
-  currentCell.style.backgroundColor = circleColor;
 }
 
 const turn = () => {
-  // 現在位置を取得
-  let lastCell = document.getElementById(
-    `cell-${firstEnemy.y}-${firstEnemy.x - 1}`
-  );
-  // 現在位置を白に戻す
-  lastCell.style.backgroundColor = "white";
-  // move関数実行
-  firstEnemy.move();
-  // 移動先の色を変更する
-  let moveCell = document.getElementById(
-    `cell-${firstEnemy.y}-${firstEnemy.x - 1}`
-  );
-  moveCell.style.backgroundColor = circleColor;
+  if (turnCount % 3 === 0) {
+    enemylist.push(new Enemy());
+  }
+
+  enemylist.forEach((e) => {
+    // 現在位置を取得
+    let lastCell = document.getElementById(`cell-${e.y}-${e.x - 1}`);
+    // 現在位置を白に戻す
+    lastCell.style.backgroundColor = "white";
+    // move関数実行
+    e.move();
+    // 移動先の色を変更する
+    let moveCell = document.getElementById(`cell-${e.y}-${e.x - 1}`);
+    moveCell.style.backgroundColor = circleColor;
+    moveCell.style.width = "1.5rem";
+    moveCell.style.height = "1.5rem";
+    moveCell.style.justifyContent = "center";
+  });
+
+  turnCount += 1;
 };
 
 export { initMap, turn, grid };
