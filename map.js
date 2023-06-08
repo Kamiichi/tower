@@ -37,7 +37,7 @@ function initMap() {
 }
 
 const turn = () => {
-  if (turnCount % 3 === 0) {
+  if (turnCount % 4 === 0) {
     enemylist.push(new Enemy());
   }
 
@@ -51,9 +51,8 @@ const turn = () => {
     // 移動先の色を変更する
     let moveCell = document.getElementById(`cell-${e.y}-${e.x - 1}`);
     moveCell.style.backgroundColor = circleColor;
-    moveCell.style.width = "1.5rem";
-    moveCell.style.height = "1.5rem";
-    moveCell.style.justifyContent = "center";
+    moveCell.style.width = "2rem";
+    moveCell.style.height = "2rem";
   });
 
   turnCount += 1;
