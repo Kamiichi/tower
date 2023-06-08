@@ -13,11 +13,10 @@ const grid = [
   [9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9],
 ];
 
-// 開始位置を定義します。(この例では右端の通路を開始位置とします。)
-let currentPosition = { x: 19, y: 4 };
-
 // ●の色を定義します。
 const circleColor = "red";
+
+const firstEnemy = new Enemy();
 
 function initMap() {
   const cellSize = (window.innerWidth * 0.7) / 20;
@@ -47,9 +46,25 @@ function initMap() {
   }
 
   let currentCell = document.getElementById(
-    `cell-${currentPosition.y}-${currentPosition.x}`
+    `cell-${firstEnemy.y}-${firstEnemy.x - 1}`
   );
   currentCell.style.backgroundColor = circleColor;
-  console.log(document);
 }
-export { initMap };
+
+const turn = () => {
+  // 現在位置を取得
+  let lastCell = document.getElementById(
+    `cell-${firstEnemy.y}-${firstEnemy.x - 1}`
+  );
+  // 現在位置を白に戻す
+  lastCell.style.backgroundColor = "white";
+  // move関数実行
+  firstEnemy.move();
+  // 移動先の色を変更する
+  let moveCell = document.getElementById(
+    `cell-${firstEnemy.y}-${firstEnemy.x - 1}`
+  );
+  moveCell.style.backgroundColor = circleColor;
+};
+
+export { initMap, turn, grid };

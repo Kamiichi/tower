@@ -1,4 +1,6 @@
 import Enemy from "./Enemy.js";
-import { initMap } from "./map.js";
+import { initMap, turn } from "./map.js";
 
 initMap();
+
+setInterval(() => turn(), 1000, 1000);

@@ -6,10 +6,7 @@ class Enemy {
   }
 
   move() {
-    this.x = this.x + 1;
-    console.log("移動した");
-    console.log(this.x);
-    console.log(this.y);
+    this.x = this.x - 1;
   }
 }
 
