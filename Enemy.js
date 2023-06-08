@@ -11,7 +11,7 @@ class Enemy {
   }
 
   move() {
-    let p = this.path[this.turn];
+    let p = this.path[this.turn % this.path.length];
     console.log(p);
     this.x = p[0] + 1;
     this.y = p[1];
