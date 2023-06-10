@@ -2,7 +2,7 @@ import Enemy from "./Enemy.js";
 import { grid } from "./constant.js";
 import searchPath from "./searchPath.js";
 
-// ●の色を定義します。
+// ●の色を定義します
 const circleColor = "red";
 
 const enemylist = [];
