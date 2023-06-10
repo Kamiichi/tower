@@ -1,16 +1,21 @@
 import Enemy from "./Enemy.js";
 import { grid } from "./constant.js";
+import searchPath from "./searchPath.js";
 
 // ●の色を定義します。
 const circleColor = "red";
 
 const enemylist = [];
-
+const p = [];
 let turnCount = 0;
 
 function initMap() {
   const cellSize = (window.innerWidth * 0.7) / 20;
   document.documentElement.style.setProperty("--cell-size", `${cellSize}px`);
+  
+  //search Pathを実行
+  let path = searchPath();
+  path.forEach((pp) => {p.push(pp)});
 
   const gridContainer = document.getElementById("grid");
   for (let i = 0; i < grid.length; i++) {
@@ -37,7 +42,8 @@ function initMap() {
 }
 
 const turn = () => {
-  if (turnCount % 4 === 0) {
+  //if (turnCount % 4 === 0) {
+  if (turnCount === 0) {
     enemylist.push(new Enemy());
   }
 
@@ -48,11 +54,14 @@ const turn = () => {
     lastCell.style.backgroundColor = "white";
     // move関数実行
     e.move();
+    console.log("[%d,%d] %s",e.x-1, e.y, p[0]);
+
     // 移動先の色を変更する
     let moveCell = document.getElementById(`cell-${e.y}-${e.x - 1}`);
     moveCell.style.backgroundColor = circleColor;
     moveCell.style.width = "2rem";
     moveCell.style.height = "2rem";
+
   });
 
   turnCount += 1;
