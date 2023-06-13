@@ -8,7 +8,8 @@ const circleColor = "red";
 const enemylist = [];
 const p = [];
 let turnCount = 0;
-let hitPoint = 50;
+const cHitPoint = 200;
+let hitPoint = cHitPoint;
 
 function initMap() {
   const cellSize = (window.innerWidth * 0.7) / 20;
@@ -19,6 +20,8 @@ function initMap() {
   path.forEach((pp) => {
     p.push(pp);
   });
+
+  dispHpAndTurn();
 
   const gridContainer = document.getElementById("grid");
   for (let i = 0; i < grid.length; i++) {
@@ -46,7 +49,7 @@ function initMap() {
 
 const turn = () => {
   // if (turnCount % 4 === 0) {
-  if (turnCount === 0) {
+  if (Math.random() * 100 <= 10) {
     enemylist.push(new Enemy());
   }
 
@@ -62,10 +65,7 @@ const turn = () => {
     // ダメージ
     if (e.turn !== 1 && e.x - 1 === p[0][0] && e.y === p[0][1]) {
       hitPoint -= 1;
-      const hpText = document.getElementById("hitPoint");
-      hpText.textContent = hitPoint;
-      const hpBar = document.getElementById("hpBar");
-      hpBar.style = `width: ${hitPoint * 2}%`;
+      dispHpAndTurn();
       // ゲームオーバー
       if (hitPoint === 0) {
         lastCell.style.backgroundColor = "red";
@@ -75,18 +75,40 @@ const turn = () => {
 
     // 移動先の色を変更する
     let moveCell = document.getElementById(`cell-${e.y}-${e.x - 1}`);
-    moveCell.style.backgroundColor = circleColor;
+    // 重複判定のやり方は要検討
+    if (moveCell.style.backgroundColor === circleColor) {
+      moveCell.style.backgroundColor = "green";
+      moveCell.style.width = ` ${2}rem`;
+      moveCell.style.height = ` ${2}rem`;
+    } else {
+      moveCell.style.backgroundColor = circleColor;
+    }
+    // 敵の表示をそれっぽくする
     moveCell.style.width = ` ${1}rem`;
     moveCell.style.height = ` ${1}rem`;
-    moveCell.style.paddingRight = `${Math.random() - 0.5}rem`;
-    moveCell.style.paddingTop = `${Math.random() - 0.5}rem`;
+    moveCell.style.marginRight = `${Math.random() - 0.5}rem`;
+    moveCell.style.marginTop = `${Math.random() - 0.5}rem`;
   }
 
+  // ターンカウント増加
   turnCount += 1;
   const turnText = document.getElementById("turn");
   turnText.textContent = turnCount;
 
   return true;
+};
+
+const dispHpAndTurn = () => {
+  // HPテキスト
+  const hpText = document.getElementById("hitPoint");
+  hpText.textContent = hitPoint;
+  // HPバー
+  const hpBar = document.getElementById("hpBar");
+  console.log(hitPoint);
+  hpBar.style = `width: ${(hitPoint / cHitPoint) * 100}%`;
+  if (hitPoint / cHitPoint > 10) {
+    hpBar.style.backgroundColor = "red";
+  }
 };
 
 export { initMap, turn, grid, hitPoint };
