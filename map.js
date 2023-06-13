@@ -8,14 +8,17 @@ const circleColor = "red";
 const enemylist = [];
 const p = [];
 let turnCount = 0;
+let hitPoint = 50;
 
 function initMap() {
   const cellSize = (window.innerWidth * 0.7) / 20;
   document.documentElement.style.setProperty("--cell-size", `${cellSize}px`);
-  
+
   //search Pathを実行
   let path = searchPath();
-  path.forEach((pp) => {p.push(pp)});
+  path.forEach((pp) => {
+    p.push(pp);
+  });
 
   const gridContainer = document.getElementById("grid");
   for (let i = 0; i < grid.length; i++) {
@@ -42,29 +45,48 @@ function initMap() {
 }
 
 const turn = () => {
-  //if (turnCount % 4 === 0) {
+  // if (turnCount % 4 === 0) {
   if (turnCount === 0) {
     enemylist.push(new Enemy());
   }
 
-  enemylist.forEach((e) => {
+  for (let i = 0; i < enemylist.length; i++) {
+    let e = enemylist[i];
     // 現在位置を取得
     let lastCell = document.getElementById(`cell-${e.y}-${e.x - 1}`);
     // 現在位置を白に戻す
     lastCell.style.backgroundColor = "white";
     // move関数実行
     e.move();
-    console.log("[%d,%d] %s",e.x-1, e.y, p[0]);
+
+    // ダメージ
+    if (e.turn !== 1 && e.x - 1 === p[0][0] && e.y === p[0][1]) {
+      hitPoint -= 1;
+      const hpText = document.getElementById("hitPoint");
+      hpText.textContent = hitPoint;
+      const hpBar = document.getElementById("hpBar");
+      hpBar.style = `width: ${hitPoint * 2}%`;
+      // ゲームオーバー
+      if (hitPoint === 0) {
+        lastCell.style.backgroundColor = "red";
+        return false;
+      }
+    }
 
     // 移動先の色を変更する
     let moveCell = document.getElementById(`cell-${e.y}-${e.x - 1}`);
     moveCell.style.backgroundColor = circleColor;
-    moveCell.style.width = "2rem";
-    moveCell.style.height = "2rem";
-
-  });
+    moveCell.style.width = ` ${1}rem`;
+    moveCell.style.height = ` ${1}rem`;
+    moveCell.style.paddingRight = `${Math.random() - 0.5}rem`;
+    moveCell.style.paddingTop = `${Math.random() - 0.5}rem`;
+  }
 
   turnCount += 1;
+  const turnText = document.getElementById("turn");
+  turnText.textContent = turnCount;
+
+  return true;
 };
 
-export { initMap, turn, grid };
+export { initMap, turn, grid, hitPoint };

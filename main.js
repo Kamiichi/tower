@@ -2,4 +2,13 @@ import { initMap, turn } from "./map.js";
 
 initMap();
 
-setInterval(() => turn(), 100, 100);
+const interval = setInterval(
+  function () {
+    const r = turn();
+    if (!r) {
+      clearInterval(interval);
+    }
+  },
+  100,
+  1000
+);
