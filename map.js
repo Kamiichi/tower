@@ -5,7 +5,11 @@ import searchPath from "./searchPath.js";
 // ●の色を定義します
 const circleColor = "red";
 
+//turret normal
+const normalTurretColor = "orange"; 
+
 const enemylist = [];
+const turretlist = [];
 const p = [];
 let turnCount = 0;
 const cHitPoint = 200;
@@ -48,9 +52,30 @@ function initMap() {
 }
 
 const turn = () => {
-  // if (turnCount === 1) {
+  //砲台の作成
+  if (turnCount === 1) {
+    turretlist.push(new Turret("normal",5,5));
+  }
   if (Math.random() * 100 <= 10) {
     enemylist.push(new Enemy());
+  }
+
+  //砲台の処理
+  for (let i = 0; i < turretlist.length; i++) {
+    let t = turretlist[i];
+    
+    // 位置を取得
+    let turretCell = document.getElementById(`cell-${t.y}-${t.x - 1}`);
+    
+    // 砲台の幅高さを指定
+    turretCell.style.width = ` ${2}rem`;
+    turretCell.style.height = ` ${2}rem`;
+    
+    // テキストを代入 
+    turretCell.innerText = t.turretType;
+    turretCell.style.color = "white";
+
+    turretCell.style.backgroundColor = normalTurretColor;
   }
 
   for (let i = 0; i < enemylist.length; i++) {
