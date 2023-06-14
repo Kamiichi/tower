@@ -65,7 +65,8 @@ const turn = () => {
     // move関数実行
     e.move();
 
-    if (e.getDamage(1)) {
+    // 仮置きダメージ判定
+    if (e.getDamage(0)) {
       enemylist.splice(i, 1);
       continue;
     }
@@ -113,7 +114,7 @@ const _dispHpAndTurn = () => {
   // HPバー
   const hpBar = document.getElementById("hpBar");
   hpBar.style = `width: ${(hitPoint / cHitPoint) * 100}%`;
-  if (hitPoint / cHitPoint > 10) {
+  if ((hitPoint / cHitPoint) * 100 < 10) {
     hpBar.style.backgroundColor = "red";
   }
 };
