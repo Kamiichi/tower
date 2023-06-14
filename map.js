@@ -59,14 +59,12 @@ const turn = () => {
     let lastCell = document.getElementById(`cell-${e.y}-${e.x - 1}`);
     // 現在位置を白に戻す
     lastCell.style.backgroundColor = "white";
-    const h1 = document.createElement("h1");
-    h1.className === "";
-    lastCell.appendChild(h1);
+    lastCell.innerText = "";
     // move関数実行
     e.move();
 
     // 仮置きダメージ判定
-    if (e.getDamage(0)) {
+    if (e.getDamage(1)) {
       enemylist.splice(i, 1);
       continue;
     }
@@ -93,10 +91,12 @@ const turn = () => {
       moveCell.style.backgroundColor = circleColor;
     }
     // 敵の表示をそれっぽくする
-    moveCell.style.width = ` ${1}rem`;
-    moveCell.style.height = ` ${1}rem`;
-    moveCell.style.marginRight = `${Math.random() - 0.5}rem`;
-    moveCell.style.marginTop = `${Math.random() - 0.5}rem`;
+    moveCell.style.width = ` ${2}rem`;
+    moveCell.style.height = ` ${2}rem`;
+    // moveCell.style.marginRight = `${Math.random() - 0.5}rem`;
+    // moveCell.style.marginTop = `${Math.random() - 0.5}rem`;
+    moveCell.innerText = e.hp;
+    moveCell.style.color = "white";
   }
 
   // ターンカウント増加
