@@ -21,7 +21,7 @@ function initMap() {
     p.push(pp);
   });
 
-  dispHpAndTurn();
+  _dispHpAndTurn();
 
   const gridContainer = document.getElementById("grid");
   for (let i = 0; i < grid.length; i++) {
@@ -48,7 +48,7 @@ function initMap() {
 }
 
 const turn = () => {
-  // if (turnCount % 4 === 0) {
+  // if (turnCount === 1) {
   if (Math.random() * 100 <= 10) {
     enemylist.push(new Enemy());
   }
@@ -59,13 +59,21 @@ const turn = () => {
     let lastCell = document.getElementById(`cell-${e.y}-${e.x - 1}`);
     // 現在位置を白に戻す
     lastCell.style.backgroundColor = "white";
+    const h1 = document.createElement("h1");
+    h1.className === "";
+    lastCell.appendChild(h1);
     // move関数実行
     e.move();
+
+    if (e.getDamage(1)) {
+      enemylist.splice(i, 1);
+      continue;
+    }
 
     // ダメージ
     if (e.turn !== 1 && e.x - 1 === p[0][0] && e.y === p[0][1]) {
       hitPoint -= 1;
-      dispHpAndTurn();
+      _dispHpAndTurn();
       // ゲームオーバー
       if (hitPoint === 0) {
         lastCell.style.backgroundColor = "red";
@@ -94,17 +102,16 @@ const turn = () => {
   turnCount += 1;
   const turnText = document.getElementById("turn");
   turnText.textContent = turnCount;
-
+  // ターン継続
   return true;
 };
 
-const dispHpAndTurn = () => {
+const _dispHpAndTurn = () => {
   // HPテキスト
   const hpText = document.getElementById("hitPoint");
   hpText.textContent = hitPoint;
   // HPバー
   const hpBar = document.getElementById("hpBar");
-  console.log(hitPoint);
   hpBar.style = `width: ${(hitPoint / cHitPoint) * 100}%`;
   if (hitPoint / cHitPoint > 10) {
     hpBar.style.backgroundColor = "red";

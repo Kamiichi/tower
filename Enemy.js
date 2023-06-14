@@ -1,5 +1,4 @@
 import searchPath from "./searchPath.js";
-import { turn } from "./map.js";
 
 class Enemy {
   constructor() {
@@ -8,6 +7,7 @@ class Enemy {
     this.speed = 30;
     this.path = searchPath();
     this.turn = 0;
+    this.hp = 100;
   }
 
   move() {
@@ -15,6 +15,11 @@ class Enemy {
     this.x = p[0] + 1;
     this.y = p[1];
     this.turn += 1;
+  }
+
+  getDamage(damage) {
+    this.hp -= damage;
+    return this.hp === 0;
   }
 }
 
