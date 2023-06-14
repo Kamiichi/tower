@@ -1,6 +1,7 @@
 import Enemy from "./Enemy.js";
 import { grid } from "./constant.js";
 import searchPath from "./searchPath.js";
+import Turret from "./Turret.js";
 
 // ●の色を定義します
 const circleColor = "red";
@@ -54,30 +55,13 @@ function initMap() {
 const turn = () => {
   //砲台の作成
   if (turnCount === 1) {
-    turretlist.push(new Turret("normal",5,5));
+    turretlist.push(new Turret("normal",6,6));
   }
   if (Math.random() * 100 <= 10) {
     enemylist.push(new Enemy());
   }
 
-  //砲台の処理
-  for (let i = 0; i < turretlist.length; i++) {
-    let t = turretlist[i];
-    
-    // 位置を取得
-    let turretCell = document.getElementById(`cell-${t.y}-${t.x - 1}`);
-    
-    // 砲台の幅高さを指定
-    turretCell.style.width = ` ${2}rem`;
-    turretCell.style.height = ` ${2}rem`;
-    
-    // テキストを代入 
-    turretCell.innerText = t.turretType;
-    turretCell.style.color = "white";
-
-    turretCell.style.backgroundColor = normalTurretColor;
-  }
-
+  // Enemy Process
   for (let i = 0; i < enemylist.length; i++) {
     let e = enemylist[i];
     // 現在位置を取得
@@ -122,6 +106,25 @@ const turn = () => {
     // moveCell.style.marginTop = `${Math.random() - 0.5}rem`;
     moveCell.innerText = e.hp;
     moveCell.style.color = "white";
+  }
+
+  //Turret Process
+  //砲台の処理
+  for (let i = 0; i < turretlist.length; i++) {
+    let t = turretlist[i];
+    
+    // 位置を取得
+    let turretCell = document.getElementById(`cell-${t.y}-${t.x - 1}`);
+    // 砲台の幅高さを指定
+    turretCell.style.width = ` ${2}rem`;
+    turretCell.style.height = ` ${2}rem`;
+    // テキストを代入 
+    turretCell.innerText = t.turretType;
+    turretCell.style.color = "white";
+    turretCell.style.backgroundColor = normalTurretColor;
+
+    //search Enemy
+    
   }
 
   // ターンカウント増加
