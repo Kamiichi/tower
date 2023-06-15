@@ -1,6 +1,7 @@
 import Enemy from "./Enemy.js";
 import { grid } from "./constant.js";
 import searchPath from "./searchPath.js";
+import attackableEnemies from "./attackableEnemies.js";
 import Turret from "./Turret.js";
 
 // ●の色を定義します
@@ -56,8 +57,10 @@ const turn = () => {
   //砲台の作成
   if (turnCount === 1) {
     turretlist.push(new Turret("normal",6,6));
+    turretlist.push(new Turret("normal",18,6));
   }
   if (Math.random() * 100 <= 10) {
+  //if (turnCount === 1) {
     enemylist.push(new Enemy());
   }
 
@@ -71,12 +74,6 @@ const turn = () => {
     lastCell.innerText = "";
     // move関数実行
     e.move();
-
-    // 仮置きダメージ判定
-    if (e.getDamage(1)) {
-      enemylist.splice(i, 1);
-      continue;
-    }
 
     // ダメージ
     if (e.turn !== 1 && e.x - 1 === p[0][0] && e.y === p[0][1]) {
@@ -124,7 +121,27 @@ const turn = () => {
     turretCell.style.backgroundColor = normalTurretColor;
 
     //search Enemy
-    
+    let enemiesInRange = attackableEnemies(t, enemylist);
+
+    // 範囲の敵にダメージを付与
+    for (let i = 0; i < enemiesInRange.length; i++) {
+      let enemy = enemiesInRange[i];
+      if (enemylist.indexOf(enemy)!== -1) {
+        if(enemy.getDamage(t.power)){
+
+          // 位置を取得
+          let enemyCell = document.getElementById(`cell-${enemy.y}-${enemy.x - 1}`);
+          // テキストを代入 
+          enemyCell.innerText = "";
+          enemyCell.style.color = "white";
+          enemyCell.style.backgroundColor = "white";
+
+          //enemyオブジェクトをリストから消去
+          let index = enemylist.indexOf(enemy);
+          enemylist.splice(index, 1);
+        }
+      }
+    }
   }
 
   // ターンカウント増加
