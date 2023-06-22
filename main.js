@@ -10,5 +10,4 @@ const interval = setInterval(
     }
   },
   100,
-  1000
 );

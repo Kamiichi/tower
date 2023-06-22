@@ -7,10 +7,9 @@ function attackableEnemies(turret, enemylist) {
 
     // 射程範囲内の敵をフィルタリング
     let enemiesInRange = enemylist.filter(enemy => {
-        let distance = Math.max(Math.abs(pos[0] - enemy.x), Math.abs(pos[1] - enemy.y));
+        let distance = Math.max(Math.abs(pos[0] - enemy.x + 1), Math.abs(pos[1] - enemy.y ));
         return distance <= attackRange;
     });
-
     return enemiesInRange;
 }
 

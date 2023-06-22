@@ -5,8 +5,8 @@ import searchPath from "./searchPath.js";
 import attackableEnemies from "./attackableEnemies.js";
 import Turret from "./Turret.js";
 
-import placeTurret from "./strategy.js";
-import selectAttackTarget from "./strategy.js";
+import { placeTurret } from "./strategy.js";
+import { selectAttackTarget } from "./strategy.js";
 
 // ●の色を定義します
 const circleColor = "red";
@@ -22,7 +22,7 @@ const turretlist = [];
 const p = [];
 let turnCount = 0;
 const cHitPoint = 200;
-const cMoney = 1000;
+const cMoney = 1200;
 let hitPoint = cHitPoint;
 let money = cMoney;
 
@@ -81,21 +81,19 @@ function initMap() {
 const turn = () => {  
   //砲台の作成
   let pTurretData = placeTurret(turnCount, money, enemylist, turretlist);
-
   for (let turretData of pTurretData) {
-    let [type, x, y] = turretData;
-    if (turretValidation(type, x-1, y, turretlist, money)) {
-        turretlist.push(new Turret(type, x, y));
-        // お金を減らす
-        money -= TURRET_TYPES[type].price;
-    }
+   let [type, x, y] = turretData;
+   if (turretValidation(type, x, y, turretlist, money)) {
+       turretlist.push(new Turret(type, x, y));
+       // お金を減らす
+       money -= TURRET_TYPES[type].price;
+   }
   }
   
   if (Math.random() * 100 <= 10) {
-  //if (turnCount === 1) {
     enemylist.push(new Enemy());
   }
-
+  
   // Enemy Process
   for (let i = 0; i < enemylist.length; i++) {
     let e = enemylist[i];
@@ -150,19 +148,19 @@ const turn = () => {
     // テキストを代入 
     turretCell.innerText = t.turretType;
     turretCell.style.color = "white";
-    turretCell.style.backgroundColor = t1TurretColor;
+    turretCell.style.backgroundColor = t.color;
 
     //search Enemy
     let enemiesInRange = attackableEnemies(t, enemylist);
 
     //select strategy
-    let targetEnemies = selectAttackTarget(enemiesInRange);
+    let targetEnemies = selectAttackTarget(t, enemiesInRange);
     
     //攻撃数
     let attack_num = t.attackslots;
-
+    
     for (let i = 0; i < Math.min(attack_num, targetEnemies.length); i++) {
-      let enemy = enemiesInRange[i];
+      let enemy = targetEnemies[i];
       if (enemylist.indexOf(enemy)!== -1) {
         if(enemy.getDamage(t.power)){
           //報酬を入手
@@ -185,7 +183,6 @@ const turn = () => {
 
   // ターンカウント増加
   turnCount += 1;
-  console.log(money);
   const turnText = document.getElementById("turn");
   turnText.textContent = turnCount;
   // ターン継続

@@ -7,7 +7,7 @@ class Enemy {
     this.speed = 30;
     this.path = searchPath();
     this.turn = 0;
-    this.hp = 20;
+    this.hp = 40;
     this.reward = 100;
   }
 
@@ -19,10 +19,8 @@ class Enemy {
   }
 
   getDamage(damage) {
-    //console.log(`Damage: ${damage}, HP before: ${this.hp}`);
     this.hp -= damage;
-    //console.log(`HP after: ${this.hp}`);
-    return this.hp === 0;
+    return this.hp <= 0;
   }
   
 }
