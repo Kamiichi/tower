@@ -7,7 +7,8 @@ class Enemy {
     this.speed = 30;
     this.path = searchPath();
     this.turn = 0;
-    this.hp = 10;
+    this.hp = 20;
+    this.reward = 100;
   }
 
   move() {

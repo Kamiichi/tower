@@ -11,4 +11,19 @@ const grid = [
   [9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9],
 ];
 
+export const TURRET_TYPES = {
+    t1: {
+        power: 1,
+        range: 1,
+        attackslots: 1,
+        price: 300,
+    },
+    t2: {
+        power: 2,
+        range: 2,
+        attackslots: 2,
+        price: 600,
+    }
+};
+
 export { grid };

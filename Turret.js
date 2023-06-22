@@ -1,3 +1,5 @@
+import { TURRET_TYPES } from './constant.js';
+
 class Turret {
   constructor(turretType, x, y) {
     this.x = x;
@@ -5,38 +7,28 @@ class Turret {
     this.turretType = turretType;
     this.power = this.setPower(turretType);
     this.range = this.setRange(turretType);
+    this.attackslots = this.setAttackSlots(turretType);
+    this.price = this.setPrice(turretType);
   }
 
   setPower(turretType) {
-    let power;
-    switch (turretType) {
-      case "normal":
-        power = 1;
-        break;
-      case "hoge":
-        power = 2;
-        break;
-      
-      default:
-        power = 1; // default power
-    }
+    let power = TURRET_TYPES[turretType] ? TURRET_TYPES[turretType].power : -1; // default power
     return power;
   }
 
+  setAttackSlots(turretType) {
+    let attackslots = TURRET_TYPES[turretType] ? TURRET_TYPES[turretType].attackslots : -1; // default attackslots
+    return attackslots;
+  }
+
   setRange(turretType) {
-    let range;
-    switch (turretType) {
-      case "normal":
-        range = 1;
-        break;
-      case "hoge":
-        range = 2;
-        break;
-      
-      default:
-        range = 1; // default range
-    }
+    let range = TURRET_TYPES[turretType] ? TURRET_TYPES[turretType].range : -1; // default range
     return range;
+  }
+
+  setPrice(turretType) {
+    let price = TURRET_TYPES[turretType] ? TURRET_TYPES[turretType].price : -1; // default price
+    return price;
   }
 }
 

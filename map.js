@@ -1,21 +1,46 @@
 import Enemy from "./Enemy.js";
 import { grid } from "./constant.js";
+import { TURRET_TYPES } from './constant.js';
 import searchPath from "./searchPath.js";
 import attackableEnemies from "./attackableEnemies.js";
 import Turret from "./Turret.js";
 
+import placeTurret from "./strategy.js";
+import selectAttackTarget from "./strategy.js";
+
 // ●の色を定義します
 const circleColor = "red";
 
-//turret normal
-const normalTurretColor = "orange"; 
+//turret t1
+const t1TurretColor = "orange"; 
+
+//turret t2
+const t2TurretColor = "purple"; 
 
 const enemylist = [];
 const turretlist = [];
 const p = [];
 let turnCount = 0;
 const cHitPoint = 200;
+const cMoney = 1000;
 let hitPoint = cHitPoint;
+let money = cMoney;
+
+function turretValidation(type, x, y, turretlist, money) {
+  // 位置が砲台を配置可能な場所であることを確認
+  if (grid[y][x] !== 1  ) {
+    return false;
+  }
+  // 既に砲台が配置されていないことを確認
+  if (turretlist.some(turret => turret.x === x && turret.y === y)) {
+    return false;
+  }
+  // 砲台の価格がプレイヤーのお金を超えていないことを確認
+  if (money < TURRET_TYPES[type].price) {
+    return false;
+  }
+  return true;
+}
 
 function initMap() {
   const cellSize = (window.innerWidth * 0.7) / 20;
@@ -53,12 +78,19 @@ function initMap() {
   }
 }
 
-const turn = () => {
+const turn = () => {  
   //砲台の作成
-  if (turnCount === 1) {
-    turretlist.push(new Turret("normal",6,6));
-    turretlist.push(new Turret("normal",18,6));
+  let pTurretData = placeTurret(turnCount, money, enemylist, turretlist);
+
+  for (let turretData of pTurretData) {
+    let [type, x, y] = turretData;
+    if (turretValidation(type, x-1, y, turretlist, money)) {
+        turretlist.push(new Turret(type, x, y));
+        // お金を減らす
+        money -= TURRET_TYPES[type].price;
+    }
   }
+  
   if (Math.random() * 100 <= 10) {
   //if (turnCount === 1) {
     enemylist.push(new Enemy());
@@ -111,23 +143,30 @@ const turn = () => {
     let t = turretlist[i];
     
     // 位置を取得
-    let turretCell = document.getElementById(`cell-${t.y}-${t.x - 1}`);
+    let turretCell = document.getElementById(`cell-${t.y}-${t.x}`);
     // 砲台の幅高さを指定
     turretCell.style.width = ` ${2}rem`;
     turretCell.style.height = ` ${2}rem`;
     // テキストを代入 
     turretCell.innerText = t.turretType;
     turretCell.style.color = "white";
-    turretCell.style.backgroundColor = normalTurretColor;
+    turretCell.style.backgroundColor = t1TurretColor;
 
     //search Enemy
     let enemiesInRange = attackableEnemies(t, enemylist);
 
-    // 範囲の敵にダメージを付与
-    for (let i = 0; i < enemiesInRange.length; i++) {
+    //select strategy
+    let targetEnemies = selectAttackTarget(enemiesInRange);
+    
+    //攻撃数
+    let attack_num = t.attackslots;
+
+    for (let i = 0; i < Math.min(attack_num, targetEnemies.length); i++) {
       let enemy = enemiesInRange[i];
       if (enemylist.indexOf(enemy)!== -1) {
         if(enemy.getDamage(t.power)){
+          //報酬を入手
+          money += enemy.reward;
 
           // 位置を取得
           let enemyCell = document.getElementById(`cell-${enemy.y}-${enemy.x - 1}`);
@@ -146,6 +185,7 @@ const turn = () => {
 
   // ターンカウント増加
   turnCount += 1;
+  console.log(money);
   const turnText = document.getElementById("turn");
   turnText.textContent = turnCount;
   // ターン継続
