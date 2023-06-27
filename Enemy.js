@@ -7,7 +7,7 @@ class Enemy {
     this.speed = 30;
     this.path = searchPath();
     this.turn = 0;
-    this.hp = 50;
+    this.hp = Math.floor(Math.random() * 50);
     this.reward = 100;
   }
 
