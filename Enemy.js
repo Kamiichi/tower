@@ -7,7 +7,7 @@ class Enemy {
     this.speed = 30;
     this.path = searchPath();
     this.turn = 0;
-    this.hp = 40;
+    this.hp = 50;
     this.reward = 100;
   }
 
@@ -22,7 +22,6 @@ class Enemy {
     this.hp -= damage;
     return this.hp <= 0;
   }
-  
 }
 
 export default Enemy;
